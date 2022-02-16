@@ -1,0 +1,22 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net5.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="Peernet.Browser.Client\**" />
+    <Compile Remove="Peernet.Browser.Models\**" />
+    <EmbeddedResource Remove="Peernet.Browser.Client\**" />
+    <EmbeddedResource Remove="Peernet.Browser.Models\**" />
+    <None Remove="Peernet.Browser.Client\**" />
+    <None Remove="Peernet.Browser.Models\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="AsyncAwaitBestPractices.MVVM" Version="6.0.4" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="6.0.0" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
+  </ItemGroup>
+
+</Project>

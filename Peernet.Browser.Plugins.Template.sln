@@ -1,0 +1,36 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.31515.178
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Peernet.Browser.Plugins.Template", "Peernet.Browser.Plugins.Template\Peernet.Browser.Plugins.Template.csproj", "{51671163-5EA1-4220-A495-BF64EC22507B}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution items", "Solution items", "{FC1958E4-A50E-408A-97DA-530C2BAFACEB}"
+	ProjectSection(SolutionItems) = preProject
+		README.md = README.md
+	EndProjectSection
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Peernet.SDK", "Peernet.SDK\Peernet.SDK.csproj", "{F6EF9573-2251-4AEF-A02C-F0495F8D076F}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{51671163-5EA1-4220-A495-BF64EC22507B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{51671163-5EA1-4220-A495-BF64EC22507B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{51671163-5EA1-4220-A495-BF64EC22507B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{51671163-5EA1-4220-A495-BF64EC22507B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F6EF9573-2251-4AEF-A02C-F0495F8D076F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F6EF9573-2251-4AEF-A02C-F0495F8D076F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F6EF9573-2251-4AEF-A02C-F0495F8D076F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F6EF9573-2251-4AEF-A02C-F0495F8D076F}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {27307706-2618-442D-A39A-CB289447CBDE}
+	EndGlobalSection
+EndGlobal
