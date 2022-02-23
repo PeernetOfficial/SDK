@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 
 namespace Peernet.SDK.Models.Presentation.Home
@@ -36,7 +37,14 @@ namespace Peernet.SDK.Models.Presentation.Home
             foreach (var point in points)
             {
                 var latitudeLongitude = point.Split(",");
-                geoPoints.Add(new GeoPoint(double.Parse(latitudeLongitude[0]), double.Parse(latitudeLongitude[1])));
+                double latitude;
+                double longitude;
+
+                if (double.TryParse(latitudeLongitude[0], NumberStyles.Any, CultureInfo.InvariantCulture, out latitude) &&
+                    double.TryParse(latitudeLongitude[1], NumberStyles.Any, CultureInfo.InvariantCulture, out longitude))
+                {
+                    geoPoints.Add(new GeoPoint(latitude, longitude));
+                }
             }
 
             return geoPoints;

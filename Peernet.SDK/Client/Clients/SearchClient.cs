@@ -57,7 +57,7 @@ namespace Peernet.SDK.Client.Clients
                 var val = pi.GetValue(obj, null);
                 if (val != null)
                 {
-                    res.Add(pi.Name.ToLower(), Uri.EscapeUriString(val.ToString()));
+                    res.Add(pi.Name.ToLower(), Uri.EscapeDataString(val.ToString()));
                 }
             }
             return res;

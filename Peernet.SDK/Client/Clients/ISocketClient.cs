@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace Peernet.SDK.Client.Clients
@@ -11,7 +12,7 @@ namespace Peernet.SDK.Client.Clients
 
         Task Send(string data);
 
-        Task StartReceiving();
+        Task StartReceiving(CancellationTokenSource cancellationTokenSource);
 
         event EventHandler<string> MessageArrived;
     }

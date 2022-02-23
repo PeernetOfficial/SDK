@@ -17,8 +17,6 @@ namespace Peernet.SDK.Common
 
         string LogFile { get; }
 
-        bool PlayButtonPlugEnabled { get; set; }
-
         string PluginsLocation { get; set; }
 
         Uri SocketUrl { get; }

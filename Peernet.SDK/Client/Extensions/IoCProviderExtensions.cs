@@ -3,14 +3,15 @@ using System.Net.Http;
 using Microsoft.Extensions.DependencyInjection;
 using Peernet.SDK.Client.Clients;
 using Peernet.SDK.Client.Http;
+using Peernet.SDK.Common;
 
 namespace Peernet.SDK.Client.Extensions
 {
     public static class IoCProviderExtensions
     {
-        public static void RegisterPeernetClients(this ServiceCollection provider, Func<string> apiUrlProvider, string apiKey, Action<HttpResponseMessage, string> onRequestFailure = null)
-        {
-            provider.AddSingleton<IHttpClientFactory, HttpClientFactory>((sp) => new HttpClientFactory(apiUrlProvider.Invoke(), apiKey));
+        public static void RegisterPeernetClients(this ServiceCollection provider, ISettingsManager settings, Action<HttpResponseMessage, string> onRequestFailure = null)
+        {            
+            provider.AddSingleton<IHttpClientFactory, HttpClientFactory>((sp) => new HttpClientFactory(settings));
             provider.AddSingleton<IHttpExecutor, HttpExecutor>((sp) => new HttpExecutor(sp.GetRequiredService<IHttpClientFactory>(), onRequestFailure));
             provider.AddTransient<IDownloadClient, DownloadClient>();
             provider.AddTransient<IFileClient, FileClient>();
@@ -22,7 +23,7 @@ namespace Peernet.SDK.Client.Extensions
             provider.AddTransient<ISearchClient, SearchClient>();
             provider.AddTransient<IShutdownClient, ShutdownClient>();
             provider.AddTransient<IApiClient, ApiClient>();
-            provider.AddTransient<ISocketClient, SocketClient>();
+            provider.AddTransient<ISocketClient>((sp) => new SocketClient(settings.SocketUrl));
         }
     }
 }

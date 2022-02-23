@@ -15,7 +15,7 @@ namespace Peernet.SDK.Client.Clients
 
         public event EventHandler<string> MessageArrived;
 
-        private CancellationTokenSource source;
+        private CancellationTokenSource cancellationTokenSource;
 
         public SocketClient(Uri socketUrl)
         {
@@ -33,21 +33,21 @@ namespace Peernet.SDK.Client.Clients
             await socket.SendAsync(new ArraySegment<byte>(Encoding.UTF8.GetBytes(data)), WebSocketMessageType.Text, true, CancellationToken.None);
         }
 
-        public async Task StartReceiving()
+        public async Task StartReceiving(CancellationTokenSource cancellationTokenSource)
         {
-            source = new CancellationTokenSource();
-            var socketReceiverToken = source.Token;
+            this.cancellationTokenSource = cancellationTokenSource;
+            var cancellationToken = cancellationTokenSource.Token;
             MemoryStream outputStream = null;
             var buffer = WebSocket.CreateClientBuffer(ReceiveBufferSize, ReceiveBufferSize);
             try
             {
-                while (!socketReceiverToken.IsCancellationRequested)
+                while (!cancellationToken.IsCancellationRequested)
                 {
                     outputStream = new MemoryStream(ReceiveBufferSize);
                     WebSocketReceiveResult receiveResult;
                     do
                     {
-                        receiveResult = await socket.ReceiveAsync(buffer, socketReceiverToken);
+                        receiveResult = await socket.ReceiveAsync(buffer, cancellationToken);
                         if (receiveResult.MessageType != WebSocketMessageType.Close)
                         {
                             outputStream.Write(buffer.Array, 0, receiveResult.Count);
@@ -72,8 +72,8 @@ namespace Peernet.SDK.Client.Clients
 
         public void Disconnect()
         {
-            source.Cancel();
-            source.Token.WaitHandle.WaitOne();
+            cancellationTokenSource.Cancel();
+            cancellationTokenSource.Token.WaitHandle.WaitOne();
             socket.Dispose();
         }
     }

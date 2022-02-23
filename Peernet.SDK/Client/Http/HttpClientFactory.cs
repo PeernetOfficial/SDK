@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Peernet.SDK.Common;
+using System;
 using System.Net.Http;
 
 namespace Peernet.SDK.Client.Http
@@ -7,6 +8,12 @@ namespace Peernet.SDK.Client.Http
     {
         private readonly string apiUrl;
         private readonly string apiKey;
+
+        public HttpClientFactory(ISettingsManager settings)
+        {
+            this.apiUrl = settings.ApiUrl;
+            this.apiKey = settings.ApiKey;
+        }
 
         public HttpClientFactory(string apiUrl, string apiKey)
         {
