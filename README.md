@@ -1,5 +1,5 @@
 # Peernet SDK
-__Peernet SDK__ (Peernet.SDK) is a __Class Library__ project targetting .NET 5.0. The SDK is devided into few parts. One part is __Models__ which is set of plugin interfaces, domain and presentation models.  
+__Peernet SDK__ (Peernet.SDK) is a __Class Library__ project targetting .NET 6.0. The SDK is devided into few parts. One part is __Models__ which is set of plugin interfaces, domain and presentation models.  
 Presentation models are used among presentation part of the Peernet Browser. They define objects living in the User Interface.  
 Domain models are objects representing structures returned from the backend. They are mainly needed for the second part of the SDK, which is _Client_.  
 __Client__ is set of APIs for Backend communication. Single _PeernetClient_ object gathers all functionalities in one place.  
