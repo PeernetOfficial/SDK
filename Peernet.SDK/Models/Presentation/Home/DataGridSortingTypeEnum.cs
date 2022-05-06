@@ -3,7 +3,7 @@
     public enum DataGridSortingTypeEnum
     {
         None,
-        Asc,
-        Desc
+        Ascending,
+        Descending
     }
 }

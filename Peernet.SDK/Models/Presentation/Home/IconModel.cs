@@ -20,9 +20,9 @@ namespace Peernet.SDK.Models.Presentation.Home
             ShowArrow = showArrow;
             SelectCommand = new AsyncCommand(async () =>
             {
-                IsSelected ^= true;
                 if (onClick != null)
                 {
+                    IsSelected ^= true;
                     await onClick.Invoke(this);
                 }
             });

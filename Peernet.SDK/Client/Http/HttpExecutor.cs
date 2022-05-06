@@ -50,6 +50,19 @@ namespace Peernet.SDK.Client.Http
             return GetFromResponseMessage<T>(response, suppressErrorNotification);
         }
 
+        public async Task<Stream> GetAsync(
+            HttpMethod method,
+            string relativePath,
+            Dictionary<string, string> queryParameters = null,
+            HttpContent content = null,
+            bool suppressErrorNotification = false)
+        {
+            var httpRequestMessage = HttpHelper.PrepareMessage(relativePath, method, queryParameters, content);
+            var response = await httpClientLazy.Value.SendAsync(httpRequestMessage);
+
+            return GetFromResponseMessage(response, suppressErrorNotification);
+        }
+
         private static T Deserialize<T>(Stream stream)
         {
             using var textReader = new StreamReader(stream);
@@ -58,6 +71,12 @@ namespace Peernet.SDK.Client.Http
         }
 
         private T GetFromResponseMessage<T>(HttpResponseMessage response, bool suppressErrorNotification)
+        {
+            using var stream = GetFromResponseMessage(response, suppressErrorNotification);
+            return Deserialize<T>(stream);
+        }
+
+        private Stream GetFromResponseMessage(HttpResponseMessage response, bool suppressErrorNotification)
         {
             lock (lockObject)
             {
@@ -81,8 +100,7 @@ namespace Peernet.SDK.Client.Http
                 }
             }
 
-            using var stream = response.Content.ReadAsStreamAsync().Result;
-            return Deserialize<T>(stream);
+            return response.Content.ReadAsStreamAsync().Result;
         }
     }
 }

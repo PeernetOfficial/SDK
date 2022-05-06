@@ -6,6 +6,6 @@
         Name,
         Date,
         Size,
-        Share
+        SharedByCount
     }
 }

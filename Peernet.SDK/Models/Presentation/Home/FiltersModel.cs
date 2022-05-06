@@ -10,16 +10,14 @@ namespace Peernet.SDK.Models.Presentation.Home
 {
     public class FiltersModel : INotifyPropertyChanged
     {
-        private readonly string inputText;
 
         public event PropertyChangedEventHandler PropertyChanged;
 
         public string UuId { get; set; }
 
-        public FiltersModel(string inputText)
+        public FiltersModel(SearchFilterResultModel searchFilter)
         {
-            this.inputText = inputText;
-
+            SearchFilterResult = searchFilter;
             ClearCommand = new AsyncCommand(() =>
             {
                 Reset();
@@ -30,8 +28,6 @@ namespace Peernet.SDK.Models.Presentation.Home
             FileFormatFilters = new FileFormatFilterModel(Apply);
 
             Results.CollectionChanged += (o, s) => PropertyChanged?.Invoke(this, new(nameof(IsVisible)));
-
-            InitSearch();
         }
 
         public IAsyncCommand ClearCommand { get; }
@@ -65,14 +61,11 @@ namespace Peernet.SDK.Models.Presentation.Home
 
         public void Apply()
         {
-            InitSearch();
             SearchFilterResult.FileFormat = FileFormatFilters.GetSelected();
             SearchFilterResult.Time = DateFilters.GetSelected();
 
             RefreshTabs();
         }
-
-        private void InitSearch() => SearchFilterResult = new SearchFilterResultModel { InputText = inputText, Uuid = UuId };
 
         private void RefreshTabs()
         {

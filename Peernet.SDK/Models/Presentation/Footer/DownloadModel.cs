@@ -1,9 +1,9 @@
-﻿using System.Collections.Generic;
-using System.ComponentModel;
-using Peernet.SDK.Models.Domain.Common;
+﻿using Peernet.SDK.Models.Domain.Common;
 using Peernet.SDK.Models.Domain.Download;
 using Peernet.SDK.Models.Extensions;
 using Peernet.SDK.Models.Presentation.Home;
+using System.Collections.Generic;
+using System.ComponentModel;
 
 namespace Peernet.SDK.Models.Presentation.Footer
 {
@@ -48,6 +48,8 @@ namespace Peernet.SDK.Models.Presentation.Footer
                 PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(IsMapEnabled)));
             }
         }
+
+        public bool IsPlayerEnabled { get; set; }
 
         public List<GeoPoint> Points { get; }
 

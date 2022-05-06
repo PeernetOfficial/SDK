@@ -5,6 +5,7 @@ using Newtonsoft.Json;
 
 namespace Peernet.SDK.Models.Domain.Common
 {
+    [Serializable]
     public class ApiFile
     {
         public string Id { get; set; }

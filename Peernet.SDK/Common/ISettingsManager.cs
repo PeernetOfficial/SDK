@@ -22,5 +22,7 @@ namespace Peernet.SDK.Common
         Uri SocketUrl { get; }
 
         void Save();
+
+        bool Validate();
     }
 }

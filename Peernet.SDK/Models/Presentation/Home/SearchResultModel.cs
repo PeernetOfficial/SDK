@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using Peernet.SDK.Models.Presentation.Footer;
+using System.Collections.Generic;
 
 namespace Peernet.SDK.Models.Presentation.Home
 {
@@ -6,7 +7,7 @@ namespace Peernet.SDK.Models.Presentation.Home
     {
         public string Id { get; set; }
         public string StatusText { get; set; }
-        public List<SearchResultRowModel> Rows { get; set; } = new();
+        public List<DownloadModel> Rows { get; set; } = new();
 
         public SearchFilterResultModel Filters { get; set; }
 

@@ -1,28 +1,23 @@
-﻿using System;
-using Peernet.SDK.Models.Extensions;
+﻿using Peernet.SDK.Models.Extensions;
+using System;
 
 namespace Peernet.SDK.Models.Presentation.Home
 {
     public class SearchFilterResultModel
     {
-        public bool ShouldReset { get; set; }
-
-        public bool IsNewSearch => Uuid.IsNullOrEmpty();
+        public AdvancedFilterModel AdvancedFilter { get; set; }
         public FileFormat FileFormat { get; set; } = FileFormat.None;
         public FilterType FilterType { get; set; }
         public string InputText { get; set; }
-        public string Uuid { get; set; }
+        public bool IsNewSearch => Uuid.IsNullOrEmpty();
+        public int LimitOfResult { get; set; }
+        public bool ShouldReset { get; set; }
         public int? SizeFrom { get; set; }
         public int? SizeTo { get; set; }
         public TimePeriods? Time { get; set; }
-
         public DateTime? TimeFrom { get; set; }
         public DateTime? TimeTo { get; set; }
-
-        public int LimitOfResult { get; set; }
-
-        public DataGridSortingNameEnum SortName { get; set; }
-        public DataGridSortingTypeEnum SortType { get; set; }
+        public string Uuid { get; set; }
 
         public (DateTime from, DateTime to) GetDateRange()
         {

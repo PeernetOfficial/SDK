@@ -1,5 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Net.Http;
+using System.Web;
 
 namespace Peernet.SDK.Client.Http
 {
@@ -34,7 +36,7 @@ namespace Peernet.SDK.Client.Http
                     queryString += "&";
                 }
 
-                queryString += $"{param.Key}={param.Value}";
+                queryString += $"{param.Key}={HttpUtility.UrlEncode(param.Value)}";
             }
 
             return queryString;
