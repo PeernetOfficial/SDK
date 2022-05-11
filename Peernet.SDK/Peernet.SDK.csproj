@@ -1,16 +1,19 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>net6.0</TargetFramework>
+    <TargetFramework>net6.0-windows</TargetFramework>
+	<UseWPF>true</UseWPF>
+	<GenerateAssemblyInfo>False</GenerateAssemblyInfo>
   </PropertyGroup>
 
   <ItemGroup>
     <Compile Remove="Peernet.Browser.Client\**" />
     <Compile Remove="Peernet.Browser.Models\**" />
-    <EmbeddedResource Remove="Peernet.Browser.Client\**" />
+	<EmbeddedResource Remove="Peernet.Browser.Client\**" />
     <EmbeddedResource Remove="Peernet.Browser.Models\**" />
     <None Remove="Peernet.Browser.Client\**" />
     <None Remove="Peernet.Browser.Models\**" />
+
   </ItemGroup>
 
   <ItemGroup>
