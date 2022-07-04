@@ -1,4 +1,5 @@
-﻿using System.ComponentModel;
+﻿using Peernet.SDK.Models.Domain.Common;
+using System.ComponentModel;
 
 namespace Peernet.SDK.Models.Presentation.Profile
 {
@@ -34,6 +35,10 @@ namespace Peernet.SDK.Models.Presentation.Profile
                 }
             }
         }
+
+        public ApiFile[] Files { get; set; }
+
+        public string Description { get; set; }
 
         private void NotifyPropertyChanged(string propertyName)
         {
