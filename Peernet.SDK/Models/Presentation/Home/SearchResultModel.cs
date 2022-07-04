@@ -1,4 +1,5 @@
-﻿using Peernet.SDK.Models.Presentation.Footer;
+﻿using Peernet.SDK.Models.Domain.Search;
+using Peernet.SDK.Models.Presentation.Footer;
 using System.Collections.Generic;
 
 namespace Peernet.SDK.Models.Presentation.Home
@@ -6,7 +7,7 @@ namespace Peernet.SDK.Models.Presentation.Home
     public class SearchResultModel
     {
         public string Id { get; set; }
-        public string StatusText { get; set; }
+        public SearchStatusEnum Status { get; set; }
         public List<DownloadModel> Rows { get; set; } = new();
 
         public SearchFilterResultModel Filters { get; set; }

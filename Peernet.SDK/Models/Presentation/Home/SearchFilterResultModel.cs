@@ -10,7 +10,8 @@ namespace Peernet.SDK.Models.Presentation.Home
         public FilterType FilterType { get; set; }
         public string InputText { get; set; }
         public bool IsNewSearch => Uuid.IsNullOrEmpty();
-        public int LimitOfResult { get; set; }
+        public int Limit { get; set; }
+        public int Offset { get; set; }
         public bool ShouldReset { get; set; }
         public int? SizeFrom { get; set; }
         public int? SizeTo { get; set; }
