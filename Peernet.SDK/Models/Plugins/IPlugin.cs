@@ -5,6 +5,6 @@ namespace Peernet.SDK.Models.Plugins
 {
     public interface IPlugin
     {
-        void Load(ServiceCollection services);
+        void Load(IServiceCollection services);
     }
 }

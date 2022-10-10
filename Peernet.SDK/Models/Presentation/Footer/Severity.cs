@@ -3,6 +3,7 @@
     public enum Severity
     {
         Normal,
+        Warning,
         Error
     }
 }
