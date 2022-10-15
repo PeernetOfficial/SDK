@@ -21,6 +21,8 @@ namespace Peernet.SDK.Common
 
         Uri SocketUrl { get; }
 
+        public string[] WebGatewayDomains { get; }
+
         void Save();
 
         bool Validate();
