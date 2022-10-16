@@ -22,7 +22,7 @@ namespace Peernet.SDK.Client.Extensions
             provider.AddTransient<IProfileClient, ProfileClient>();
             provider.AddTransient<ISearchClient, SearchClient>();
             provider.AddTransient<IShutdownClient, ShutdownClient>();
-            provider.AddTransient<IApiClient, ApiClient>();
+            provider.AddTransient<IStatusClient, StatusClient>();
             provider.AddTransient<ISocketClient>((sp) => new SocketClient(settings.SocketUrl));
         }
     }

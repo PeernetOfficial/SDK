@@ -12,7 +12,7 @@ namespace Peernet.SDK.Client
             var httpClientFactory = new HttpClientFactory(apiUrl, apiKey);
             var httpExecutor = new HttpExecutor(httpClientFactory, onRequestFailure);
 
-            Core = new ApiClient(httpExecutor);
+            Core = new StatusClient(httpExecutor);
             Account = new AccountClient(httpExecutor);
             Blockchain = new BlockchainClient(httpExecutor);
             Download = new DownloadClient(httpExecutor);
@@ -28,7 +28,7 @@ namespace Peernet.SDK.Client
 
         public IBlockchainClient Blockchain { get; set; }
 
-        public IApiClient Core { get; set; }
+        public IStatusClient Core { get; set; }
 
         public IDownloadClient Download { get; set; }
 
