@@ -23,6 +23,12 @@ namespace Peernet.SDK.Common
 
         public string[] WebGatewayDomains { get; }
 
+        public string XmasWebGatewayDomains { get; }
+
+        public string NewYearsEveWebGatewayDomains { get; }
+
+        public bool DailyFeedWidgetEnabled { get; set; }
+
         void Save();
 
         bool Validate();
