@@ -1,10 +1,12 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Net.Http;
 using System.Net.Http.Json;
 using System.Threading.Tasks;
 using Peernet.SDK.Client.Http;
 using Peernet.SDK.Models.Domain.Blockchain;
 using Peernet.SDK.Models.Domain.Common;
+using Peernet.SDK.Models.Domain.Search;
 
 namespace Peernet.SDK.Client.Clients
 {
@@ -59,6 +61,16 @@ namespace Peernet.SDK.Client.Clients
             return await httpExecutor.GetResultAsync<ApiBlockchainBlock>(HttpMethod.Get,
                 GetRelativeRequestPath("read"),
                 parameters);
+        }
+
+        public async Task<SearchResult> View(byte[] node)
+        {
+            var parameters = new Dictionary<string, string>
+            {
+                [nameof(node)] = Convert.ToHexString(node)
+            };
+
+            return await httpExecutor.GetResultAsync<SearchResult>(HttpMethod.Get, GetRelativeRequestPath("view"), parameters);
         }
     }
 }
