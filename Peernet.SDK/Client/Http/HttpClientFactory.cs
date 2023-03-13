@@ -26,7 +26,12 @@ namespace Peernet.SDK.Client.Http
         public HttpClient CreateHttpClient()
         {
             var client = new HttpClient();
-            client.Timeout = TimeSpan.FromSeconds(settingsManager.HttpClientTimeoutInSeconds);
+            
+            if (settingsManager.HttpClientTimeoutInSeconds != null)
+            {
+                client.Timeout = TimeSpan.FromSeconds((long)settingsManager.HttpClientTimeoutInSeconds);
+            }
+
             client.BaseAddress = new Uri(apiUrl);
             client.DefaultRequestHeaders.Add("x-api-key", apiKey);
             return client;

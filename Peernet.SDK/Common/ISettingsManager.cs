@@ -23,7 +23,7 @@ namespace Peernet.SDK.Common
 
         public string[] WebGatewayDomains { get; }
 
-        public long HttpClientTimeoutInSeconds { get; }
+        public long? HttpClientTimeoutInSeconds { get; }
 
         void Save();
 
