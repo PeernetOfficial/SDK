@@ -4,6 +4,7 @@ using Peernet.SDK.Models.Extensions;
 using Peernet.SDK.Models.Presentation.Home;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Globalization;
 
 namespace Peernet.SDK.Models.Presentation.Footer
 {
@@ -17,7 +18,6 @@ namespace Peernet.SDK.Models.Presentation.Footer
         public DownloadModel(ApiFile file)
         {
             File = file;
-            Points = Map.ConvertGeoPointsToMapScale(file.SharedByGeoIP);
             IsMapEnabled = !Points.IsNullOrEmpty();
         }
 
@@ -51,7 +51,9 @@ namespace Peernet.SDK.Models.Presentation.Footer
 
         public bool IsPlayerEnabled { get; set; }
 
-        public List<GeoPoint> Points { get; }
+        public List<GeoPoint> Points => Map.ConvertGeoPointsToMapScale(GeoPoints);
+
+        public List<GeoPoint> GeoPoints => ParseGeoIPs(File?.SharedByGeoIP);
 
         public double Progress
         {
@@ -71,6 +73,32 @@ namespace Peernet.SDK.Models.Presentation.Footer
                 status = value;
                 PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Status)));
             }
+        }
+
+        private List<GeoPoint> ParseGeoIPs(string geoIPs)
+        {
+            var geoPoints = new List<GeoPoint>();
+            if (geoIPs == null)
+            {
+                return geoPoints;
+            }
+
+            var points = geoIPs.Split("\n");
+
+            foreach (var point in points)
+            {
+                var latitudeLongitude = point.Split(",");
+                double latitude;
+                double longitude;
+
+                if (double.TryParse(latitudeLongitude[0], NumberStyles.Any, CultureInfo.InvariantCulture, out latitude) &&
+                    double.TryParse(latitudeLongitude[1], NumberStyles.Any, CultureInfo.InvariantCulture, out longitude))
+                {
+                    geoPoints.Add(new GeoPoint(latitude, longitude));
+                }
+            }
+
+            return geoPoints;
         }
     }
 }
