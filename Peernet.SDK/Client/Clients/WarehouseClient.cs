@@ -19,9 +19,9 @@ namespace Peernet.SDK.Client.Clients
 
         public override string CoreSegment => "warehouse";
 
-        public async Task<WarehouseResult> Create(Stream stream)
+        public async Task<WarehouseResult> Create(Stream stream, IProgress<UploadProgress> progress)
         {
-            using var content = new StreamContent(stream);
+            using var content = new ProgressableStreamContent(stream, progress);
 
             return await httpExecutor.GetResultAsync<WarehouseResult>(HttpMethod.Post, GetRelativeRequestPath("create"),
                 content: content);
