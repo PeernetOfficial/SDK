@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Net;
 using System.Net.Http;
+using System.Threading;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
 
@@ -42,10 +43,11 @@ namespace Peernet.SDK.Client.Http
             string relativePath,
             Dictionary<string, string> queryParameters = null,
             HttpContent content = null,
-            bool suppressErrorNotification = false)
+            bool suppressErrorNotification = false,
+            CancellationToken cancellationToken = default)
         {
             var httpRequestMessage = HttpHelper.PrepareMessage(relativePath, method, queryParameters, content);
-            var response = await httpClientLazy.Value.SendAsync(httpRequestMessage);
+            var response = await httpClientLazy.Value.SendAsync(httpRequestMessage, cancellationToken);
 
             return GetFromResponseMessage<T>(response, suppressErrorNotification);
         }

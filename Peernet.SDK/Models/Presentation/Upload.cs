@@ -4,6 +4,7 @@ using Peernet.SDK.Models.Domain.Download;
 using Peernet.SDK.Models.Domain.Warehouse;
 using Peernet.SDK.Models.Presentation.Footer;
 using System;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace Peernet.SDK.Models.Presentation
@@ -12,6 +13,7 @@ namespace Peernet.SDK.Models.Presentation
     {
         private readonly Progress<UploadProgress> progress;
         private readonly IWarehouseClient client;
+        private CancellationTokenSource cancellationTokenSource;
 
         public override event EventHandler Completed;
         public override event EventHandler StatusChanged;
@@ -23,6 +25,7 @@ namespace Peernet.SDK.Models.Presentation
             File = file;
             this.progress = progress;
             progress.ProgressChanged += UploadProgressChanged;
+            cancellationTokenSource = new CancellationTokenSource();
         }
 
         private void UploadProgressChanged(object sender, UploadProgress e)
@@ -43,7 +46,15 @@ namespace Peernet.SDK.Models.Presentation
 
         public override Task<ApiResponseDownloadStatus> Cancel()
         {
-            return Task.FromResult(new ApiResponseDownloadStatus { DownloadStatus = DownloadStatus.DownloadFinished });
+            if (IsCompleted)
+            {
+                return Task.FromResult(new ApiResponseDownloadStatus { DownloadStatus = DownloadStatus.DownloadFinished });
+            }
+            else
+            {
+                cancellationTokenSource.Cancel();
+                return Task.FromResult(new ApiResponseDownloadStatus { DownloadStatus = DownloadStatus.DownloadCanceled });
+            }
         }
 
         public override Task<ApiResponseDownloadStatus> Pause()
@@ -58,12 +69,12 @@ namespace Peernet.SDK.Models.Presentation
 
         public override async Task<ApiResponseDownloadStatus> Start()
         {
+            Id = Guid.NewGuid().ToString();
             var stream = System.IO.File.OpenRead(File.FullPath);
-            var status = await client.Create(stream, progress);
+            var status = await client.Create(stream, progress, cancellationTokenSource.Token);
             if (status?.Status == WarehouseStatus.StatusOK)
             {
                 File.Hash = status.Hash;
-                Id = Guid.NewGuid().ToString();
                 return new ApiResponseDownloadStatus { DownloadStatus = DownloadStatus.DownloadFinished };
             }
 

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Net.Http;
+using System.Threading;
 using System.Threading.Tasks;
 using Peernet.SDK.Client.Http;
 using Peernet.SDK.Models.Domain.Warehouse;
@@ -19,12 +20,12 @@ namespace Peernet.SDK.Client.Clients
 
         public override string CoreSegment => "warehouse";
 
-        public async Task<WarehouseResult> Create(Stream stream, IProgress<UploadProgress> progress)
+        public async Task<WarehouseResult> Create(Stream stream, IProgress<UploadProgress> progress, CancellationToken cancellationToken = default)
         {
             using var content = new ProgressableStreamContent(stream, progress);
 
             return await httpExecutor.GetResultAsync<WarehouseResult>(HttpMethod.Post, GetRelativeRequestPath("create"),
-                content: content);
+                content: content, cancellationToken: cancellationToken);
         }
 
         public async Task<WarehouseResult> ReadPath(byte[] hash, string path)
