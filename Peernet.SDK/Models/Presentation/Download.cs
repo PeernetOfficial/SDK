@@ -22,37 +22,34 @@ namespace Peernet.SDK.Models.Presentation
 
         public string DestinationPath { get; private set; }
 
-        public DownloadStatus Status { get; set; }
-
         public override string Name => File.Name.Length > 26 ? $"{File.Name.Substring(0, 26)}..." : File.Name;
 
         public override event EventHandler Completed;
-        public override event EventHandler StatusChanged;
         public override event EventHandler ProgressChanged;
 
-        public override async Task<ApiResponseDownloadStatus> Cancel()
+        public override async Task Cancel()
         {
-            var status = await Execute(DownloadAction.Cancel);
-
-            return status;
+            var responseStatus = await Execute(DownloadAction.Cancel);
+            Status = MapStatus(responseStatus.DownloadStatus);
         }
 
-        public override async Task<ApiResponseDownloadStatus> Pause()
+        public override async Task Pause()
         {
-            return await Execute(DownloadAction.Pause);
+            var responseStatus = await Execute(DownloadAction.Pause);
+            Status = MapStatus(responseStatus.DownloadStatus);
         }
 
-        public override async Task<ApiResponseDownloadStatus> Resume()
+        public override async Task Resume()
         {
-            return await Execute(DownloadAction.Resume);
+            var responseStatus = await Execute(DownloadAction.Resume);
+            Status = MapStatus(responseStatus.DownloadStatus);
         }
 
-        public override async Task<ApiResponseDownloadStatus> Start()
+        public override async Task Start()
         {
             var responseStatus = await downloadClient.Start(DestinationPath, File.Hash, File.NodeId);
             Id = responseStatus.Id;
-
-            return responseStatus;
+            Status = MapStatus(responseStatus.DownloadStatus);
         }
 
         public override async Task UpdateStatus()
@@ -72,13 +69,34 @@ namespace Peernet.SDK.Models.Presentation
                 }
                 
                 ProgressChanged?.Invoke(this, EventArgs.Empty);
-                Status = status.DownloadStatus;
+                Status = MapStatus(status.DownloadStatus);
             }
         }
 
         private async Task<ApiResponseDownloadStatus> Execute(DownloadAction action)
         {
             return await downloadClient.GetAction(Id, action);
+        }
+
+        private DataTransferStatus MapStatus(DownloadStatus downloadStatus)
+        {
+            switch (downloadStatus)
+            {
+                case DownloadStatus.DownloadFinished:
+                    return DataTransferStatus.Finished;
+                case DownloadStatus.DownloadPause:
+                    return DataTransferStatus.Pause;
+                case DownloadStatus.DownloadCanceled:
+                    return DataTransferStatus.Canceled;
+                case DownloadStatus.DownloadActive:
+                    return DataTransferStatus.Active;
+                case DownloadStatus.DownloadWaitMetadata:
+                    return DataTransferStatus.WaitMetadata;
+                case DownloadStatus.DownloadWaitSwarm:
+                    return DataTransferStatus.WaitSwarm;
+                default:
+                    throw new NotImplementedException();
+            }
         }
     }
 }

@@ -1,6 +1,5 @@
 ﻿using Peernet.SDK.Client.Clients;
 using Peernet.SDK.Client.Http;
-using Peernet.SDK.Models.Domain.Download;
 using Peernet.SDK.Models.Domain.Warehouse;
 using Peernet.SDK.Models.Presentation.Footer;
 using System;
@@ -16,7 +15,6 @@ namespace Peernet.SDK.Models.Presentation
         private CancellationTokenSource cancellationTokenSource;
 
         public override event EventHandler Completed;
-        public override event EventHandler StatusChanged;
         public override event EventHandler ProgressChanged;
 
         public Upload(IWarehouseClient client, FileModel file, Progress<UploadProgress> progress)
@@ -44,30 +42,18 @@ namespace Peernet.SDK.Models.Presentation
 
         public override string Name => File.FileNameWithoutExtension;
 
-        public override Task<ApiResponseDownloadStatus> Cancel()
+        public override Task Cancel()
         {
-            if (IsCompleted)
-            {
-                return Task.FromResult(new ApiResponseDownloadStatus { DownloadStatus = DownloadStatus.DownloadFinished });
-            }
-            else
+            if (!IsCompleted)
             {
                 cancellationTokenSource.Cancel();
-                return Task.FromResult(new ApiResponseDownloadStatus { DownloadStatus = DownloadStatus.DownloadCanceled });
+                Status = DataTransferStatus.Canceled;
             }
+
+            return Task.CompletedTask;
         }
 
-        public override Task<ApiResponseDownloadStatus> Pause()
-        {
-            return Task.FromResult(new ApiResponseDownloadStatus { DownloadStatus = DownloadStatus.DownloadFinished });
-        }
-
-        public override Task<ApiResponseDownloadStatus> Resume()
-        {
-            return Task.FromResult(new ApiResponseDownloadStatus { DownloadStatus = DownloadStatus.DownloadFinished });
-        }
-
-        public override async Task<ApiResponseDownloadStatus> Start()
+        public override async Task Start()
         {
             Id = Guid.NewGuid().ToString();
             var stream = System.IO.File.OpenRead(File.FullPath);
@@ -75,10 +61,8 @@ namespace Peernet.SDK.Models.Presentation
             if (status?.Status == WarehouseStatus.StatusOK)
             {
                 File.Hash = status.Hash;
-                return new ApiResponseDownloadStatus { DownloadStatus = DownloadStatus.DownloadFinished };
+                Status = DataTransferStatus.Finished;
             }
-
-            return new ApiResponseDownloadStatus { DownloadStatus = DownloadStatus.DownloadCanceled };
         }
 
         public override Task UpdateStatus()

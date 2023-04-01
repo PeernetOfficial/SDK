@@ -1,5 +1,4 @@
-﻿using Peernet.SDK.Models.Domain.Download;
-using System;
+﻿using System;
 using System.ComponentModel;
 using System.Threading.Tasks;
 
@@ -7,13 +6,16 @@ namespace Peernet.SDK.Models.Presentation
 {
     public abstract class DataTransfer : INotifyPropertyChanged
     {
-        private double progress;
-        private bool isCompleted;
         private string id;
+        private bool isCompleted;
+        private double progress;
+        private DataTransferStatus status;
 
         public abstract event EventHandler Completed;
-        public abstract event EventHandler StatusChanged;
+
         public abstract event EventHandler ProgressChanged;
+
+        public event PropertyChangedEventHandler PropertyChanged;
 
         public string Id
         {
@@ -22,16 +24,6 @@ namespace Peernet.SDK.Models.Presentation
             {
                 id = value;
                 PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Id)));
-            }
-        }
-
-        public double Progress
-        {
-            get => progress;
-            set
-            {
-                progress = value;
-                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Progress)));
             }
         }
 
@@ -45,18 +37,42 @@ namespace Peernet.SDK.Models.Presentation
             }
         }
 
-        public event PropertyChangedEventHandler PropertyChanged;
-
         public abstract string Name { get; }
 
-        public abstract Task<ApiResponseDownloadStatus> Pause();
+        public double Progress
+        {
+            get => progress;
+            set
+            {
+                progress = value;
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Progress)));
+            }
+        }
 
-        public abstract Task<ApiResponseDownloadStatus> Cancel();
+        public DataTransferStatus Status
+        {
+            get => status;
+            set
+            {
+                status = value;
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Status)));
+            }
+        }
 
-        public abstract Task<ApiResponseDownloadStatus> Resume();
+        public abstract Task Cancel();
 
-        public abstract Task<ApiResponseDownloadStatus> Start();
-        
+        public virtual Task Pause()
+        {
+            return Task.CompletedTask;
+        }
+
+        public virtual Task Resume()
+        {
+            return Task.CompletedTask;
+        }
+
+        public abstract Task Start();
+
         public abstract Task UpdateStatus();
     }
 }
