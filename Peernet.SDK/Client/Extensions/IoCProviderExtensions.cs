@@ -17,6 +17,7 @@ namespace Peernet.SDK.Client.Extensions
             provider.AddTransient<IFileClient, FileClient>();
             provider.AddTransient<IAccountClient, AccountClient>();
             provider.AddTransient<IBlockchainClient, BlockchainClient>();
+            provider.AddTransient<IMergeClient, MergeClient>();
             provider.AddTransient<IWarehouseClient, WarehouseClient>();
             provider.AddTransient<IExploreClient, ExploreClient>();
             provider.AddTransient<IProfileClient, ProfileClient>();
