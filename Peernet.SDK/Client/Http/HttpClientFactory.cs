@@ -6,11 +6,13 @@ namespace Peernet.SDK.Client.Http
 {
     internal class HttpClientFactory : IHttpClientFactory
     {
+        private readonly ISettingsManager settingsManager;
         private readonly string apiUrl;
         private readonly string apiKey;
 
         public HttpClientFactory(ISettingsManager settings)
         {
+            this.settingsManager = settings;
             this.apiUrl = settings.ApiUrl;
             this.apiKey = settings.ApiKey;
         }
@@ -24,6 +26,12 @@ namespace Peernet.SDK.Client.Http
         public HttpClient CreateHttpClient()
         {
             var client = new HttpClient();
+            
+            if (settingsManager.HttpClientTimeoutInSeconds != null)
+            {
+                client.Timeout = TimeSpan.FromSeconds((long)settingsManager.HttpClientTimeoutInSeconds);
+            }
+
             client.BaseAddress = new Uri(apiUrl);
             client.DefaultRequestHeaders.Add("x-api-key", apiKey);
             return client;
