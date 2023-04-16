@@ -1,5 +1,6 @@
 ﻿using Peernet.SDK.Client.Clients;
 using Peernet.SDK.Client.Http;
+using Peernet.SDK.Models.Domain.Download;
 using Peernet.SDK.Models.Domain.Warehouse;
 using Peernet.SDK.Models.Presentation.Footer;
 using System;
@@ -30,12 +31,6 @@ namespace Peernet.SDK.Models.Presentation
         {
             Progress = e.ProgressPercentage;
             ProgressChanged?.Invoke(this, EventArgs.Empty);
-
-            if (e.ProgressPercentage == 100)
-            {
-                IsCompleted = true;
-                Completed?.Invoke(this, EventArgs.Empty);
-            }
         }
 
         public FileModel File { get; }
@@ -55,19 +50,53 @@ namespace Peernet.SDK.Models.Presentation
 
         public override async Task Start()
         {
-            Id = Guid.NewGuid().ToString();
+            Id = Guid.NewGuid();
             var stream = System.IO.File.OpenRead(File.FullPath);
-            var status = await client.Create(stream, progress, cancellationTokenSource.Token);
+            var status = await client.Create(Id, stream, progress, cancellationTokenSource.Token);
             if (status?.Status == WarehouseStatus.StatusOK)
             {
+                IsCompleted = true;
+                Completed?.Invoke(this, EventArgs.Empty);
                 File.Hash = status.Hash;
                 Status = DataTransferStatus.Finished;
             }
         }
 
-        public override Task UpdateStatus()
+        public override async Task UpdateStatus()
         {
-            return Task.CompletedTask;
+            var status = await client.CreateTrackUploadId(Id);
+
+            if (status != null)
+            {
+                if (status.UploadStatus == DataTransferStatus.Finished)
+                {
+                    IsCompleted = true;
+                    Progress = 100;
+                    Completed?.Invoke(this, EventArgs.Empty);
+                }
+                else
+                {
+                    Progress = status.Progress.Percentage;
+                }
+
+                ProgressChanged?.Invoke(this, EventArgs.Empty);
+                Status = MapStatus(status.UploadStatus);
+            }
+        }
+
+        private DataTransferStatus MapStatus(DataTransferStatus status)
+        {
+            switch (status)
+            {
+                case DataTransferStatus.Active:
+                    return DataTransferStatus.Active;
+                case DataTransferStatus.Finished:
+                    return DataTransferStatus.Finished;
+                case DataTransferStatus.Canceled:
+                    return DataTransferStatus.Canceled;
+                default:
+                    return DataTransferStatus.Active;
+            }
         }
     }
 }

@@ -9,8 +9,8 @@ namespace Peernet.SDK.Client.Clients
 {
     public interface IWarehouseClient
     {
-        Task<WarehouseResult> Create(Stream stream, IProgress<UploadProgress> progress, CancellationToken cancellationToken = default);
-
+        Task<WarehouseResult> Create(Guid id, Stream stream, IProgress<UploadProgress> progress, CancellationToken cancellationToken = default);
+        Task<ApiResponseUploadStatus> CreateTrackUploadId(Guid id, CancellationToken cancellationToken = default);
         Task<WarehouseResult> ReadPath(byte[] hash, string path);
     }
 }

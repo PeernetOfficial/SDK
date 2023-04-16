@@ -30,26 +30,26 @@ namespace Peernet.SDK.Models.Presentation
         public override async Task Cancel()
         {
             var responseStatus = await Execute(DownloadAction.Cancel);
-            Status = MapStatus(responseStatus.DownloadStatus);
+            Status = responseStatus.DownloadStatus;
         }
 
         public override async Task Pause()
         {
             var responseStatus = await Execute(DownloadAction.Pause);
-            Status = MapStatus(responseStatus.DownloadStatus);
+            Status = responseStatus.DownloadStatus;
         }
 
         public override async Task Resume()
         {
             var responseStatus = await Execute(DownloadAction.Resume);
-            Status = MapStatus(responseStatus.DownloadStatus);
+            Status = responseStatus.DownloadStatus;
         }
 
         public override async Task Start()
         {
             var responseStatus = await downloadClient.Start(DestinationPath, File.Hash, File.NodeId);
             Id = responseStatus.Id;
-            Status = MapStatus(responseStatus.DownloadStatus);
+            Status = responseStatus.DownloadStatus  ;
         }
 
         public override async Task UpdateStatus()
@@ -57,7 +57,7 @@ namespace Peernet.SDK.Models.Presentation
             var status = await downloadClient.GetStatus(Id);
             if (status != null)
             {
-                if (status.DownloadStatus == DownloadStatus.DownloadFinished)
+                if (status.DownloadStatus == DataTransferStatus.Finished)
                 {
                     IsCompleted = true;
                     Progress = 100;
@@ -69,34 +69,13 @@ namespace Peernet.SDK.Models.Presentation
                 }
                 
                 ProgressChanged?.Invoke(this, EventArgs.Empty);
-                Status = MapStatus(status.DownloadStatus);
+                Status = status.DownloadStatus;
             }
         }
 
         private async Task<ApiResponseDownloadStatus> Execute(DownloadAction action)
         {
             return await downloadClient.GetAction(Id, action);
-        }
-
-        private DataTransferStatus MapStatus(DownloadStatus downloadStatus)
-        {
-            switch (downloadStatus)
-            {
-                case DownloadStatus.DownloadFinished:
-                    return DataTransferStatus.Finished;
-                case DownloadStatus.DownloadPause:
-                    return DataTransferStatus.Pause;
-                case DownloadStatus.DownloadCanceled:
-                    return DataTransferStatus.Canceled;
-                case DownloadStatus.DownloadActive:
-                    return DataTransferStatus.Active;
-                case DownloadStatus.DownloadWaitMetadata:
-                    return DataTransferStatus.WaitMetadata;
-                case DownloadStatus.DownloadWaitSwarm:
-                    return DataTransferStatus.WaitSwarm;
-                default:
-                    throw new NotImplementedException();
-            }
         }
     }
 }

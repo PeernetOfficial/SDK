@@ -22,22 +22,22 @@ namespace Peernet.SDK.Client.Clients
 
         public override string CoreSegment => "download";
 
-        public async Task<ApiResponseDownloadStatus> GetAction(string id, DownloadAction action)
+        public async Task<ApiResponseDownloadStatus> GetAction(Guid id, DownloadAction action)
         {
             var parameters = new Dictionary<string, string>
             {
-                [nameof(id)] = id,
+                [nameof(id)] = id.ToString(),
                 [nameof(action)] = ((int)action).ToString()
             };
 
             return await httpExecutor.GetResultAsync<ApiResponseDownloadStatus>(HttpMethod.Get, GetRelativeRequestPath(ActionSegment), parameters);
         }
 
-        public async Task<ApiResponseDownloadStatus> GetStatus(string id)
+        public async Task<ApiResponseDownloadStatus> GetStatus(Guid id)
         {
             var parameters = new Dictionary<string, string>
             {
-                [nameof(id)] = id
+                [nameof(id)] = id.ToString()
             };
 
             return await httpExecutor.GetResultAsync<ApiResponseDownloadStatus>(HttpMethod.Get, GetRelativeRequestPath(StatusSegment), parameters);

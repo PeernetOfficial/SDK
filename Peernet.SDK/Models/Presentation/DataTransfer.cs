@@ -6,7 +6,7 @@ namespace Peernet.SDK.Models.Presentation
 {
     public abstract class DataTransfer : INotifyPropertyChanged
     {
-        private string id;
+        private Guid id;
         private bool isCompleted;
         private double progress;
         private DataTransferStatus status;
@@ -17,7 +17,7 @@ namespace Peernet.SDK.Models.Presentation
 
         public event PropertyChangedEventHandler PropertyChanged;
 
-        public string Id
+        public Guid Id
         {
             get => id;
             set
