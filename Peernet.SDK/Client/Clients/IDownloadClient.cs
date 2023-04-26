@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
 using Peernet.SDK.Models.Domain.Download;
 
 namespace Peernet.SDK.Client.Clients
@@ -7,8 +8,8 @@ namespace Peernet.SDK.Client.Clients
     {
         Task<ApiResponseDownloadStatus> Start(string path, byte[] hash, byte[] node);
 
-        Task<ApiResponseDownloadStatus> GetStatus(string id);
+        Task<ApiResponseDownloadStatus> GetStatus(Guid id);
 
-        Task<ApiResponseDownloadStatus> GetAction(string id, DownloadAction action);
+        Task<ApiResponseDownloadStatus> GetAction(Guid id, DownloadAction action);
     }
 }
