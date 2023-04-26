@@ -11,26 +11,17 @@ namespace Peernet.SDK.Models.Presentation
 {
     public class Upload : DataTransfer
     {
-        private readonly Progress<UploadProgress> progress;
         private readonly IWarehouseClient client;
         private CancellationTokenSource cancellationTokenSource;
 
         public override event EventHandler Completed;
         public override event EventHandler ProgressChanged;
 
-        public Upload(IWarehouseClient client, FileModel file, Progress<UploadProgress> progress)
+        public Upload(IWarehouseClient client, FileModel file)
         {
             this.client = client;
             File = file;
-            this.progress = progress;
-            progress.ProgressChanged += UploadProgressChanged;
             cancellationTokenSource = new CancellationTokenSource();
-        }
-
-        private void UploadProgressChanged(object sender, UploadProgress e)
-        {
-            Progress = e.ProgressPercentage;
-            ProgressChanged?.Invoke(this, EventArgs.Empty);
         }
 
         public FileModel File { get; }
@@ -52,7 +43,7 @@ namespace Peernet.SDK.Models.Presentation
         {
             Id = Guid.NewGuid();
             var stream = System.IO.File.OpenRead(File.FullPath);
-            var status = await client.Create(Id, stream, progress, cancellationTokenSource.Token);
+            var status = await client.Create(Id, stream, cancellationTokenSource.Token);
             if (status?.Status == WarehouseStatus.StatusOK)
             {
                 IsCompleted = true;
@@ -68,19 +59,22 @@ namespace Peernet.SDK.Models.Presentation
 
             if (status != null)
             {
-                if (status.UploadStatus == DataTransferStatus.Finished)
+                if (status.APIStatus == APIStatus.DownloadResponseSuccess)
                 {
-                    IsCompleted = true;
-                    Progress = 100;
-                    Completed?.Invoke(this, EventArgs.Empty);
+                    if (status.UploadStatus == DataTransferStatus.Finished)
+                    {
+                        IsCompleted = true;
+                        Completed?.Invoke(this, EventArgs.Empty);
+                    }
+
+                    Progress = status.Progress.Percentage;
+                    ProgressChanged?.Invoke(this, EventArgs.Empty);
+                    Status = MapStatus(status.UploadStatus);
                 }
                 else
                 {
-                    Progress = status.Progress.Percentage;
+                    Status = DataTransferStatus.Failed;
                 }
-
-                ProgressChanged?.Invoke(this, EventArgs.Empty);
-                Status = MapStatus(status.UploadStatus);
             }
         }
 

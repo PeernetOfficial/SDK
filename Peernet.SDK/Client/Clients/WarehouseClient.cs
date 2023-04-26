@@ -21,12 +21,11 @@ namespace Peernet.SDK.Client.Clients
 
         public override string CoreSegment => "warehouse";
 
-        public async Task<WarehouseResult> Create(Guid id, Stream stream, IProgress<UploadProgress> progress, CancellationToken cancellationToken = default)
+        public async Task<WarehouseResult> Create(Guid id, Stream stream, CancellationToken cancellationToken = default)
         {
-            using var content = new ProgressableStreamContent(stream, progress);
             var multipartFormDataContent = new MultipartFormDataContent
             {
-                { content, "File", "File" },
+                { new StreamContent(stream), "File", "File" },
                 { new StringContent(id.ToString()), "ID" }
             };
 
