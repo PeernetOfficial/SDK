@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.IO;
 using System.Net.Http;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace Peernet.SDK.Client.Http
@@ -12,7 +13,8 @@ namespace Peernet.SDK.Client.Http
             string relativePath,
             Dictionary<string, string> queryParameters = null,
             HttpContent content = null,
-            bool suppressErrorNotification = false);
+            bool suppressErrorNotification = false,
+            CancellationToken cancellationToken = default);
 
         T GetResult<T>(
             HttpMethod method,
