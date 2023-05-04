@@ -1,10 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.IO;
 using System.Net.Http;
 using System.Threading.Tasks;
 using Peernet.SDK.Client.Http;
-using Peernet.SDK.Models.Domain.Common;
 using Peernet.SDK.Models.Domain.File;
 
 namespace Peernet.SDK.Client.Clients
@@ -31,12 +29,12 @@ namespace Peernet.SDK.Client.Clients
                 parameters);
         }
 
-        public async Task<Stream> Read(ApiFile file)
+        public async Task<Stream> Read(string hash, string node)
         {
             var parameters = new Dictionary<string, string>
             {
-                ["hash"] = Convert.ToHexString(file.Hash),
-                ["node"] = Convert.ToHexString(file.NodeId),
+                ["hash"] = hash,
+                ["node"] = node,
             };
 
             return await httpExecutor.GetAsync(HttpMethod.Get, GetRelativeRequestPath("read"), parameters);

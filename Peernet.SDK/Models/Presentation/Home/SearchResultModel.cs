@@ -7,12 +7,16 @@ namespace Peernet.SDK.Models.Presentation.Home
     public class SearchResultModel
     {
         public string Id { get; set; }
+
         public SearchStatusEnum Status { get; set; }
+
         public List<DownloadModel> Rows { get; set; } = new();
 
         public SearchFilterResultModel Filters { get; set; }
 
         public IDictionary<FilterType, int> Stats { get; set; }
+
+        public string Snapshot { get; set; }
 
         public static FilterType[] GetDefaultStats()
         {
