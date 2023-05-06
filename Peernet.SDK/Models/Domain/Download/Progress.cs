@@ -2,7 +2,7 @@
 {
     public class Progress
     {
-        public int TotalSize { get; set; }
+        public long TotalSize { get; set; }
 
         public int DownloadSize { get; set; }
 
