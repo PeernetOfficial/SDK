@@ -1,6 +1,7 @@
 ﻿using System.Threading.Tasks;
 using Peernet.SDK.Models.Domain.Blockchain;
 using Peernet.SDK.Models.Domain.Common;
+using Peernet.SDK.Models.Domain.Search;
 
 namespace Peernet.SDK.Client.Clients
 {
@@ -17,5 +18,7 @@ namespace Peernet.SDK.Client.Clients
         Task<ApiBlockchainBlock> ReadBlock(int block);
 
         Task<ApiBlockchainBlockStatus> UpdateFile(ApiFile apiFile);
+
+        Task<SearchResult> View(byte[] node);
     }
 }

@@ -2,6 +2,7 @@
 using System.Net.Http;
 using System.Threading.Tasks;
 using Peernet.SDK.Client.Http;
+using Peernet.SDK.Models.Domain.Account;
 using Peernet.SDK.Models.Domain.Blockchain;
 
 namespace Peernet.SDK.Client.Clients
@@ -16,6 +17,11 @@ namespace Peernet.SDK.Client.Clients
         }
 
         public override string CoreSegment => "account";
+
+        public async Task<ApiResponsePeerSelf> Info()
+        {
+            return await httpExecutor.GetResultAsync<ApiResponsePeerSelf>(HttpMethod.Get, GetRelativeRequestPath("info"));
+        }
 
         public async Task Delete(bool confirm)
         {
