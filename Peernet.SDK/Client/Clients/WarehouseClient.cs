@@ -26,7 +26,7 @@ namespace Peernet.SDK.Client.Clients
             var multipartFormDataContent = new MultipartFormDataContent
             {
                 { new StreamContent(stream), "File", "File" },
-                { new StringContent(id.ToString()), "ID" }
+                { new StringContent(id.ToString()), "id" }
             };
 
             return await httpExecutor.GetResultAsync<WarehouseResult>(HttpMethod.Post, GetRelativeRequestPath("create"),
