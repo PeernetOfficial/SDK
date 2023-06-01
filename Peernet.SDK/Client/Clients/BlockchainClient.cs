@@ -46,9 +46,19 @@ namespace Peernet.SDK.Client.Clients
             return await httpExecutor.GetResultAsync<ApiBlockchainHeader>(HttpMethod.Get, GetRelativeRequestPath("header"));
         }
 
-        public async Task<ApiBlockchainAddFiles> GetList()
+        public async Task<ApiBlockchainAddFiles> GetList(HighLevelFileType? fileFormat = null)
         {
-            return await httpExecutor.GetResultAsync<ApiBlockchainAddFiles>(HttpMethod.Get, GetRelativeRequestPath("file/list"));
+            Dictionary<string, string> parameters = null;
+
+            if (fileFormat != null)
+            {
+                parameters = new Dictionary<string, string>
+                {
+                    [nameof(fileFormat)] = ((int?)fileFormat).ToString()
+                };
+            }
+
+            return await httpExecutor.GetResultAsync<ApiBlockchainAddFiles>(HttpMethod.Get, GetRelativeRequestPath("file/list"), parameters);
         }
 
         public async Task<ApiBlockchainBlock> ReadBlock(int block)

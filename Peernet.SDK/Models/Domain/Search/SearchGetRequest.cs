@@ -11,6 +11,8 @@
             Reset = 1;
         }
 
+        public string Node { get; set; }
+
         /// <summary>
         /// Date from, both from/to are required if set.
         /// </summary>

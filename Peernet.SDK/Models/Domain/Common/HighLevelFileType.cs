@@ -25,6 +25,7 @@
         Executable = 17,
         Installer = 18,
         APK = 19,
-        ISO = 20
+        ISO = 20,
+        PeernetSearch = 21
     }
 }

@@ -19,6 +19,7 @@ namespace Peernet.SDK.Models.Presentation.Home
         public DateTime? TimeFrom { get; set; }
         public DateTime? TimeTo { get; set; }
         public string Uuid { get; set; }
+        public string NodeId { get; set; }
 
         public (DateTime from, DateTime to) GetDateRange()
         {

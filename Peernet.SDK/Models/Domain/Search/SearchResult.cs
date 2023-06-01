@@ -1,6 +1,6 @@
-﻿using System.Collections.Generic;
-using Peernet.SDK.Models.Domain.Common;
+﻿using Peernet.SDK.Models.Domain.Common;
 using Peernet.SDK.Models.Extensions;
+using System.Collections.Generic;
 
 namespace Peernet.SDK.Models.Domain.Search
 {

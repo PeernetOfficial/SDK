@@ -9,7 +9,7 @@ namespace Peernet.SDK.Client.Clients
     {
         Task<ApiBlockchainHeader> GetHeader();
 
-        Task<ApiBlockchainAddFiles> GetList();
+        Task<ApiBlockchainAddFiles> GetList(HighLevelFileType? fileFormat = null);
 
         Task<ApiBlockchainBlockStatus> DeleteFile(ApiFile apiFile);
 
