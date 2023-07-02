@@ -10,6 +10,8 @@ namespace Peernet.SDK.Client.Clients
 
         Task<ApiBlockchainBlockStatus> DeleteUserImage();
 
-        Task<ApiProfileData> GetProfileData();
+        Task<ApiProfileData> GetProfileData(byte[]? node = null);
+
+        Task<ApiProfileData> ReadProfile(ProfileField field, byte[]? node = null);
     }
 }

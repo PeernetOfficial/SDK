@@ -30,6 +30,8 @@ namespace Peernet.SDK.Models.Domain.Common
 
         public List<ApiFileMetadata> MetaData { get; set; }
 
+        public string Username { get; set; }
+
         [JsonIgnore]
         public int SharedByCount =>
             MetaData?.FirstOrDefault(md => md.Type == MetadataType.TagSharedByCount)?.Number ?? 0;

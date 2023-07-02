@@ -68,7 +68,8 @@ namespace Peernet.SDK.Client.Clients
                 [nameof(block)] = block.ToString()
             };
 
-            return await httpExecutor.GetResultAsync<ApiBlockchainBlock>(HttpMethod.Get,
+            return await httpExecutor.GetResultAsync<ApiBlockchainBlock>(
+                HttpMethod.Get,
                 GetRelativeRequestPath("read"),
                 parameters);
         }

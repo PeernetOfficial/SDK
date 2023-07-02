@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Peernet.SDK.Models.Extensions;
+using System;
 using System.Collections.Generic;
 using System.Net.Http;
 using System.Web;
@@ -11,7 +12,7 @@ namespace Peernet.SDK.Client.Http
         {
             var requestPath = relativePath;
 
-            if (queryParameters != null)
+            if (!queryParameters.IsNullOrEmpty())
             {
                 requestPath += "?" + GetQueryString(queryParameters);
             }

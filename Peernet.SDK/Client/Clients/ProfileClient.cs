@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Net.Http;
 using System.Net.Http.Json;
 using System.Threading.Tasks;
@@ -44,6 +45,21 @@ namespace Peernet.SDK.Client.Clients
             return await httpExecutor.GetResultAsync<ApiBlockchainBlockStatus>(HttpMethod.Post, GetRelativeRequestPath(WriteSegment), content: jsonContent);
         }
 
+        public async Task<ApiProfileData> ReadProfile(ProfileField field, byte[]? node = null)
+        {
+            var parameters = new Dictionary<string, string>()
+            {
+                [nameof(field)] = field.ToString("d")
+            };
+
+            if (node != null)
+            {
+                parameters.Add(nameof(node), Convert.ToHexString(node));
+            }
+
+            return await httpExecutor.GetResultAsync<ApiProfileData>(HttpMethod.Post, GetRelativeRequestPath("read"), parameters);
+        }
+
         public async Task<ApiBlockchainBlockStatus> DeleteUserImage()
         {
             var jsonContent = JsonContent.Create(new ApiProfileData
@@ -60,11 +76,16 @@ namespace Peernet.SDK.Client.Clients
             return await httpExecutor.GetResultAsync<ApiBlockchainBlockStatus>(HttpMethod.Post, GetRelativeRequestPath(DeleteSegment), content: jsonContent);
         }
 
-        public async Task<ApiProfileData> GetProfileData()
+        public async Task<ApiProfileData> GetProfileData(byte[]? node = null)
         {
-            var result = await httpExecutor.GetResultAsync<ApiProfileData>(HttpMethod.Get, GetRelativeRequestPath("list"));
+            var parameters = new Dictionary<string, string>();
 
-            return result;
+            if (node != null)
+            {
+                parameters.Add(nameof(node), Convert.ToHexString(node));
+            }
+
+            return await httpExecutor.GetResultAsync<ApiProfileData>(HttpMethod.Get, GetRelativeRequestPath("list"), parameters);
         }
     }
 }
