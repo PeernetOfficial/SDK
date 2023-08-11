@@ -23,6 +23,11 @@ namespace Peernet.SDK.Client.Clients
             return await httpExecutor.GetResultAsync<ApiResponseStatus>(HttpMethod.Get, GetRelativeRequestPath("status"));
         }
 
+        public async Task<PeernetConfiguration> GetConfig()
+        {
+            return await httpExecutor.GetResultAsync<PeernetConfiguration>(HttpMethod.Get, GetRelativeRequestPath("status/config"));
+        }
+
         public async Task<List<PeerStatus>> GetPeers()
         {
             return await httpExecutor.GetResultAsync<List<PeerStatus>>(HttpMethod.Get, GetRelativeRequestPath("status/peers"));

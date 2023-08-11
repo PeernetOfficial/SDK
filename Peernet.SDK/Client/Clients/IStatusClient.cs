@@ -18,5 +18,11 @@ namespace Peernet.SDK.Client.Clients
         /// </summary>
         /// <returns>List<PeerStatus></returns>
         Task<List<PeerStatus>> GetPeers();
+
+        /// <summary>
+        /// Provides current backend configuration
+        /// </summary>
+        /// <returns>List<PeerStatus></returns>
+        Task<PeernetConfiguration> GetConfig();
     }
 }
